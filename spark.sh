@@ -5,3 +5,10 @@
 ###################################################
 
 #!/bin/bash
+
+if [ -f /etc/redhat-release ]; then
+  DISTRO=`rpm -qa \*-release | grep -Ei "sl|redhat|centos" | cut -d"-" -f1`
+else
+  echo "This script is intended for Redhat-based distros."
+  exit
+fi
