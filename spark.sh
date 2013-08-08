@@ -6,9 +6,14 @@
 
 #!/bin/bash
 
+if [[ $EUID -ne 0 ]]; then
+  echo "This script must be run as root"
+  exit 1
+fi
+
 if [ -f /etc/redhat-release ]; then
   DISTRO=`rpm -qa \*-release | grep -Ei "sl|redhat|centos" | cut -d"-" -f1`
 else
   echo "This script is intended for Redhat-based distros."
-  exit
+  exit 1
 fi
