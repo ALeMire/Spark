@@ -17,3 +17,16 @@ else
   echo "This script is intended for Redhat-based distros."
   exit 1
 fi
+
+
+function yum_remove_groups()
+{
+  IFS=$'\n'
+  to_uninstall=( $( yum grouplist| awk '/Installed Groups:/ {flag=1;next} /Available Groups:/{flag=0} flag {print}' ) )
+
+  for idx in $(seq 0 $((${#to_uninstall[@]} - 1))); do
+        group_rem="${to_uninstall[$idx]}"
+        yum -y groupremove "$group_rem"
+  done
+}
+
