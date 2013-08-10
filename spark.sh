@@ -37,11 +37,35 @@ function lowercase()
 
 function add_user()
 {
-  USERNAME=`lower $1`
-  USERGROUPS=$2 
-  USERSHELL=$3
-  USERPASSWORD=$4
+  user_name=`lower $1`
+  user_groups=$2 
+  user_shell=$3
+  user_password=$4
 
-  useradd -m -G "$USERGROUPS" -s "$USERSHELL" "$USERNAME"
-  echo "$USERNAME:$USERPASSWORD" | chpasswd 
+  useradd -m -G "$user_groups" -s "$user_shell" "$user_name"
+  echo "$user_name:$user_password" | chpasswd 
 }
+
+function cfile_yes_no()
+{
+  directive=$1
+  bool_value=`lowercase $2`
+  config_file=$3
+  
+  if [ "$bool_value" == "yes" ] || [ "$bool_value" == "no" ]; then
+    sed -i "s/^#*\($directive\).*/\1 $bool_value/" $config_file
+  fi
+}
+
+function cfile_0_1()
+{
+  directive=$1
+  bool_value=$2
+  config_file=$3
+  
+  if [ "$bool_value" == "0" ] || [ "$bool_value" == "1" ]; then
+    sed -i "s/^#*\($directive\).*/\1 $bool_value/" $config_file
+  fi
+}
+
+
