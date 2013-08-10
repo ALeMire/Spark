@@ -30,3 +30,18 @@ function yum_remove_groups()
   done
 }
 
+function lowercase()
+{
+  echo $1 | tr '[:uppper]' '[:lower]'
+}
+
+function add_user()
+{
+  USERNAME=`lower $1`
+  USERGROUPS=$2 
+  USERSHELL=$3
+  USERPASSWORD=$4
+
+  useradd -m -G "$USERGROUPS" -s "$USERSHELL" "$USERNAME"
+  echo "$USERNAME:$USERPASSWORD" | chpasswd 
+}
